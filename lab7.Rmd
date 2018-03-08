@@ -1,0 +1,272 @@
+---
+title: "lab07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+```
+
+```{r}
+#' @title f
+#' @description returns square
+#' @param x 
+#' @return x squared
+f <- function(x) {
+  return (x^2)
+}
+
+#' @title g
+#' @description returns 2x + 5
+#' @param x 
+#' @return 2x + 5
+g <- function(x) {
+  return (2*x + 5)
+}
+
+#' @title fog
+#' @description returns f of g of x
+#' @param x 
+#' @return f of g of x
+fog <- function(x) {
+  return (f(g(x)))
+}
+
+#' @title gof
+#' @description returns g of f of x
+#' @param x 
+#' @return g of f of x
+gof <- function(x) {
+  return (g(f(x)))
+}
+
+#' @title pythagoras
+#' @description pythagorean theorem for triangles
+#' @param x, y
+#' @return hypotenuse length
+pythagoras <- function(x, y = x) {
+  return (sqrt(x^2 + y^2))
+}
+
+#' @title circle_area
+#' @description returns area of circle
+#' @param radius
+#' @return area of circle
+circle_area <- function(radius=1) {
+  negative <- FALSE
+  if(radius < 0) negative <- TRUE
+  if (negative) stop("radius cannot be negative")
+  else return (pi*radius^2)
+}
+
+#' @title cylinder_area
+#' @description area of cylinder
+#' @param radius, height
+#' @return area of cylinder
+#area of cylinder, default = 1, 1
+cylinder_area <- function(radius=1, height=1) {
+  negative <- FALSE
+  if(radius < 0 | height < 0) negative <- TRUE
+  if (negative) stop("radius cannot be negative")
+  else return (2*pi*radius*height + 2*circle_area(radius))
+}
+
+#' @title cylinder_volume
+#' @description returns volume of cylinder
+#' @param radius, height
+#' @return volume of cylinder
+#volume of cylinder, default = 1, 1
+cylinder_volume <- function(radius=1, height=1) {
+  negative <- FALSE
+  if(radius < 0 | height < 0) negative <- TRUE
+  if (negative) stop("radius cannot be negative")
+  else return (circle_area(radius)*height)
+}
+
+#' @title miles2kms
+#' @description converts miles to km
+#' @param miles
+#' @return km
+#converts miles to km, default of 1
+miles2kms <- function(miles=1) {
+  mile = c()
+  km = c()
+  for (i in 1:100) {
+    mile = c(mile, i)
+    km = c(km, 1.6*i)
+  }
+  return (data.frame(mile, km))
+}
+
+#' @title gallons2liters
+#' @description converts gallons to liters
+#' @param gallons
+#' @return liters
+#converts gallons to liters, default of 1
+gallons2liters <- function(gal=1) {
+  liters = c()
+  gallons = c()
+  for (i in 1:100) {
+    gallons = c(gallons, i)
+    liters = c(liters, 3.78542*i)
+  }
+  return (data.frame(gallons, liters))
+}
+
+#' @title liters2gallons
+#' @description  converts liters to gallons
+#' @param liters
+#' @return gallons
+#converts liters to gallons
+liters2gallons <- function(lit=1) {
+  liters = gallons2liters()$gallons
+  return (mutate(data.frame(liters), gallons = .264172*liters))
+}
+
+#' @title seconds2years
+#' @description converts seconds to years
+#' @param seconds
+#' @return years
+#converts seconds to years
+seconds2years <- function(seconds) {
+  return (seconds/(365*24*60*60))
+}
+seconds2years(1000000000)
+
+#' @title gaussian
+#' @description returns result of gaussian formula
+#' @param x, m, s
+#' @return result of gaussian formula
+gaussian <- function(x, m, s) {
+  return ((2.71828^(-.5*((x - m)/s)^2))/(s*sqrt(2*pi)))
+}
+dnorm(1, 0, 2)
+gaussian(1, 0 ,2)
+x <- seq(from = -4.5, to = 4.5, by = 0.1)
+y <- c()
+for (i in x)
+  y <- c(y, gaussian(i, 0, 2))
+plot(x, y, las = 1, type = "l", lwd = 2)
+```
+
+```{r}
+#' @title f1
+#' @description returns cube
+#' @param x
+#' @return x^3
+f1 <- function(x) {
+  return (x^3)
+}
+x <- seq(-4, 4, length.out = 20)
+y <- f1(x)
+plot(x, y, type = 'l', lwd = 3, col = "#FB7215", las = 1)
+abline(h = 0, v = 0, col = '#888888aa', lwd = 1.5)
+title(main = expression(paste(f(x), ' = ', x^3)))
+
+#' @title f2
+#' @description returns ((x^2 - 1)*((x+3)^3))
+#' @param x
+#' @return ((x^2 - 1)*((x+3)^3))
+f2 <- function(x) {
+  return ((x^2 - 1)*((x+3)^3))
+}
+x <- seq(-4, 4, length.out = 20)
+y <- f2(x)
+plot(x, y, type = 'l', lwd = 3, col = "#FB7215", las = 1)
+abline(h = 0, v = 0, col = '#888888aa', lwd = 1.5)
+title(main = expression(paste(f(x), ' = ', (x^2 - 1)*((x+3)^3))))
+
+#' @title f3
+#' @description returns ((x^2 - 1)*(x^2 - 9))
+#' @param x
+#' @return ((x^2 - 1)*(x^2 - 9))
+f3 <- function(x) {
+  return ((x^2 - 1)*(x^2 - 9))
+}
+x <- seq(-4, 4, length.out = 20)
+y <- f3(x)
+plot(x, y, type = 'l', lwd = 3, col = "#FB7215", las = 1)
+abline(h = 0, v = 0, col = '#888888aa', lwd = 1.5)
+title(main = expression(paste(f(x), ' = ', (x^2 - 1)*(x^2 - 9))))
+```
+
+```{r}
+descriptive <- function(v) {
+  a <- summary(v)
+  a$range <- max(v) - min(v)
+  a$iqr <- IQR(v)
+  a$sd <- sd(v)
+  return (a)
+}
+
+squish <- function(x) {
+  if (x < 0) {
+    return (0)
+  } else if (x > 100) {
+    return (100)
+  }
+  return (x)
+}
+
+is_even <- function(num) {
+  if (!is.numeric(num)) {
+    return ("NA")
+  } else if (num %% 2 == 0) {
+    return (TRUE)
+  }
+  return (FALSE)
+}
+
+is_odd <- function(num) {
+  res <- is_even(num)
+  if (res == "NA") {
+    return ("NA")
+  } else if (res == TRUE) {
+    return (FALSE)
+  }
+  return (TRUE)
+}
+
+grade <- function(score) {
+  if (score < 0 | score > 100) {
+    stop("score must be a number between 0 and 100")
+    return ("")
+  } else if (score > 90) {
+    return ("A")
+  } else if (score > 80) {
+    return ("B")
+  } else if (score > 70) {
+    return ("C")
+  } else if (score > 60) {
+    return ("D")
+  } else {
+    return ("F")
+  }
+}
+
+miles2inches <- function(m) {
+  return (m*63360)
+}
+miles2feet <- function(m) {
+  return (m*5280)
+}
+miles2yards <- function(m) {
+  return (m*1760)
+}
+miles2meters <- function(m) {
+  return (m*.00062137)
+}
+miles2kms <- function(m) {
+  return (m*.62137)
+}
+
+convert <- function(miles, to) {
+  switch(to,
+         "in" = return (miles2inches(miles)),
+         "ft" = return (miles2feet(miles)),
+         "yd" = return (miles2yards(miles)),
+         "m" = return (miles2meters(miles)),
+         "km" = return (miles2kms(miles))
+  )
+}
+```

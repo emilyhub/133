@@ -1,0 +1,1 @@
+Lab 6: working with complex file structures, exporting tables, R outpupt, plot images, learning about dplyr, learning pipelines, and chaining dplyr operations with the piper.

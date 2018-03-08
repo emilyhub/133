@@ -1,0 +1,82 @@
+---
+title: '5'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.path = '../images/')
+library(dplyr)
+library(ggplot2)
+dat <- read.csv('nba2017-players.csv', stringsAsFactors = FALSE)
+```
+
+```{r}
+slice(dat, 1:5)
+slice(dat, c(10, 15, 20, 25, 30, 35, 40, 45, 50))
+slice(dat, (nrow(dat)-4):nrow(dat))
+filter(dat, height < 70)
+filter(dat, team == "GSW")
+filter(dat, team == "GSW" & position == "C")
+select(filter(dat, team == "LAL"), player)
+select(filter(dat, team == "GSW" & position == "PG"), c("player", "salary"))
+select(filter(dat, experience > 10 & salary <= 10000000), c("player", "age", "team"))
+rookies <- subset(dat, experience == 0)
+slice(select(filter(rookies, age == 20), c("player", "team", "height", "weight")), 1:5)
+```
+
+
+```{r}
+gsw <- filter(dat, team == 'GSW')
+mutate(gsw, product = height*weight)
+gsw3 <- mutate(gsw, log_height = log(height), log_weight = log(weight))
+arrange(filter(dat, height < 71), height)
+select(slice(arrange(dat, desc(salary)), 1:5), c("player", "team", "salary"))
+select(slice(arrange(dat, desc(salary)), 1:5), c("player", "team", "salary"))
+select(slice(arrange(dat, desc(points3)), 1:10), c("player", "team", "points3"))
+gsw <- filter(dat, team == "GSW")
+gsw_mpg <- arrange(select(mutate(gsw, min_per_game = minutes/games), c("player", "experience", "min_per_game")), desc(min_per_game))
+gsw_mpg
+```
+```{r}
+summarise(dat, max(height))
+summarise(dat, sd(points3))
+summarise(group_by(dat, team), median(points3))
+summ <- summarise(group_by(dat, team), three = mean(points3))
+slice(arrange(summ, three), 1:5)
+summarise(filter(dat, position == "PF" & experience >= 5 & experience <= 10), mean(age), sd(age))
+```
+
+```{scatterplot height vs weight}
+ggplot(data = gsw) + geom_point(aes(x = height, y = weight))
+```
+```{scatterplot height vs weight labeled}
+ggplot(data = gsw) + geom_text(aes(x = height, y = weight, label = player))
+```
+```{scatterplot height vs weight labeled differently}
+ggplot(data = gsw) + geom_label(aes(x = height, y = weight, label = player))
+```
+```{density graph of salary}
+ggplot(data = dat) + geom_density(aes(salary))
+```
+```{histogram of 2 pointers}
+ggplot(data = dat) + geom_histogram(aes(points2), binwidth = 50)
+```
+```{bar graph of position}
+ggplot(data = dat) + geom_bar(aes(position))
+```
+```{experience vs salary scatterplot w regression line}
+ggplot(data = filter(dat, position == "C")) + geom_point(aes(x = experience, y = salary)) + geom_smooth(aes(x = experience, y = salary), method = lm)
+```
+```{experience vs salary scatterplot w curvy regression}
+ggplot(data = filter(dat, position == "C")) + geom_point(aes(x = experience, y = salary)) + geom_smooth(aes(x = experience, y = salary), method = loess)
+```
+
+```{r}
+ggplot(data = dat, aes(x = experience, y = salary)) + geom_point(aes(color = position)) + facet_grid(position ~ .)
+ggplot(data = dat, aes(x = experience, y = salary)) + geom_point(aes(color = team)) + facet_grid(team ~ .)
+ggplot(data = dat) + geom_density(aes(salary)) + facet_wrap(~ team)
+ggplot(data = dat, aes(x = height, y = weight)) + geom_point(aes(color = position)) + facet_grid(position ~ .)
+ggplot(data = dat) + geom_density2d(aes(x = experience, y = salary)) + facet_wrap(~ position)
+ggplot(data = filter(dat, team == "GSW")) + geom_point(aes(x = experience, y = salary)) + theme_bw()
+ggplot(data = dat) + geom_density2d(aes(x = experience, y = salary)) + facet_wrap(~ position) + theme_minimal()
+```

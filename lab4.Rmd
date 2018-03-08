@@ -1,0 +1,48 @@
+---
+title: "lab4"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+url <- "http://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data"
+abalone <- read.table(url, sep = ",")
+MyData <- read.csv(file="C:\\Users\\Em\\Documents\\abalone.data", header=TRUE, sep=",", colClasses = c("character","double", "double","double","double","double","double","double", "integer"), col.names = c("Sex", "Length", "Diameter", "Height", "Whole weight", "Shucked weight", "Viscera weight", "Shell weight", "Rings"))
+```
+```{r}
+csv <- "https://github.com/ucb-stat133/stat133-fall-2017/raw/master/data/nba2017-players.csv"
+download.file(url = csv, destfile = 'nba2017-players.csv')
+dat <- read.csv('nba2017-players.csv', stringsAsFactors = FALSE)
+tail(dat, 5)
+subset(dat, height > 70)
+subset(dat, position == "C", select =  c("player", "salary"))
+durant <- subset(dat, player == "Kevin Durant")
+ucla <- subset(dat, college == "University of California, Los Angeles")
+rookies <- subset(dat, experience == 0)
+rookie_centers <- subset(dat, experience == 0 & position == "C")
+top_players <- subset(dat, games > 50 & minutes > 100)
+max(dat$height, na.rm=T)
+min(dat$height, na.rm=T)
+unique(dat$team, incomparables = FALSE)
+length(unique(dat$team, incomparables = FALSE))
+max(dat$age, na.rm = T)
+median(dat$salary, na.rm = T)
+median(subset(dat, experience >= 10)$salary, na.rm = T)
+median(dat[dat$position == "SG" | dat$position == "PG", "salary"])
+median(dat[dat$position == "PF" & dat$age >= 29 & dat$height <= 74, "salary"])
+length(dat[dat$points <= 4,]$player)
+dat[dat$points <= 4,]$player
+dat[dat$points == 0,]$player
+length(dat[dat$college == "University of California, Berkeley", "player"])
+length(dat[dat$college == "University of Notre Dame", "player"])
+length(dat[dat$weight > 260, "player"])
+length(dat[dat$college == "", "player"])
+dat[dat$points/dat$minutes == max(dat$points/dat$minutes, na.rm=T), "player"]
+dat[dat$points3/dat$minutes == max(dat$points3/dat$minutes, na.rm=T), "player"]
+dat[dat$points2/dat$minutes == max(dat$points2/dat$minutes, na.rm=T), "player"]
+dat[dat$points1/dat$minutes == max(dat$points1/dat$minutes, na.rm=T), "player"]
+
+```
