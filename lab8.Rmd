@@ -1,0 +1,266 @@
+---
+title: '8'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+vec <- c(3, 1, 4)
+
+for (j in 1:3) {
+  print(vec[j]*3)
+}
+```
+
+```{r}
+vec <- c(3, 1, 4)
+
+for (j in 1:3) {
+  vec[j] <- vec[j]*3
+}
+vec
+```
+
+```{r}
+vec <- rep(0, 20)
+vec[1] = 1
+
+for (j in 0:19) {
+  vec[j + 1] <- (1/(2^j))
+}
+print(sum(vec))
+
+vec <- rep(0, 20)
+vec[1] = 1
+
+for (j in 0:19) {
+  vec[j + 1] <- (1/(9^j))
+}
+print(sum(vec))
+
+#Series converges as n increases
+```
+
+```{r}
+vec <- rep(0, 20)
+vec[1] = 3
+
+for (j in 1:19) {
+  vec[j + 1] <- vec[j] + 3
+}
+vec[20]
+sum(vec)
+#Series doesn't converge as n increases
+```
+
+```{r}
+vec <- rep(0, 20)
+vec[1] = 3
+
+for (j in 1:19) {
+  vec[j + 1] <- vec[j] * 2
+}
+vec[20]
+sum(vec)
+#Series doesn't converge as n increases
+```
+
+```{r}
+sinef <- function(x, n) {
+  ans <- x
+  pos <- FALSE
+  for (j in seq(3, n, by = 2)) {
+    if (pos) 
+      ans <- ans + ((x**j)/factorial(j))
+    else
+      ans <- ans - ((x**j)/factorial(j))
+    pos <- !pos
+  }
+  return (ans)
+}
+sinef(3/4, 5)
+sinef(3/4, 10)
+sinef(3/4, 50)
+sinef(3/4, 100)
+sin(3/4)
+```
+
+```{r}
+A <- matrix(1:20, nrow = 5, ncol = 4)
+X <- matrix(NA, nrow = 5, ncol = 4)
+for (i in 1:nrow(A)) {
+  for (j in 1:ncol(A)) {
+    if (A[i,j] <= 0)
+      X[i,j] <- A[i,j]**2
+    else
+      X[i,j] <- sqrt(A[i,j])
+  }
+}
+X
+```
+
+```{r}
+reduce <- function(x) {
+  while (x %% 2 == 0) {
+    x <- x / 2
+  }
+  return (x)
+}
+reduce(898128000)
+```
+
+```{r}
+avgwhile <- function(vec) {
+  i <- 1
+  ans <- 0
+  while (i <= length(vec)) {
+    ans <- ans + vec[i]
+    i <- i + 1
+  }
+  return (ans/length(vec))
+}
+avgwhile(c(15, 17))
+
+avgfor <- function(vec) {
+  ans <- 0
+  for (i in vec) {
+    ans <- ans + i
+  }
+  return (ans/length(vec))
+}
+avgfor(c(15, 17))
+
+avgrepeat <- function(vec) {
+  i <- 1
+  ans <-0
+  repeat {
+    if (i > length(vec))
+      break
+    ans <- ans + vec[i]
+    i <- i + 1
+  }
+  return (ans/length(vec))
+}
+avgrepeat(c(15, 17))
+```
+```{r}
+sdfor <- function(vec) {
+  xbar <- mean(vec)
+  ans <- 0
+  for (i in vec) {
+    ans <- ans + (i - xbar)^2
+  }
+  ans <- ans/(length(vec) - 1)
+  return (sqrt(ans))
+}
+sdfor(seq(1, 100))
+
+sdwhile <- function(vec) {
+  xbar <- mean(vec)
+  ans <- 0
+  i <- 1
+  while (i <= length(vec)) {
+    ans <- ans + (vec[i] - xbar)^2
+    i <- i + 1
+  }
+  ans <- ans/(length(vec) - 1)
+  return (sqrt(ans))
+}
+sdwhile(seq(1, 100))
+
+sdrep <- function(vec) {
+  xbar <- mean(vec)
+  ans <- 0
+  i <- 1
+  repeat {
+    if (i > length(vec)) 
+      break
+    ans <- ans + (i - xbar)^2
+    i <- i + 1
+  }
+  ans <- ans/(length(vec) - 1)
+  return (sqrt(ans))
+}
+sdrep(seq(1, 100))
+```
+```{r}
+geofor <- function(vec) {
+  ans <- 1
+  for (i in vec) {
+    ans <- ans*i
+  }
+  return (ans^(1/length(vec)))
+}
+geofor(seq(1, 100))
+
+geowhile <- function(vec) {
+  ans <- 1
+  i <- 1
+  while (i <= length(vec)) {
+    ans <- ans*vec[i]
+    i <- i + 1
+  }
+  return (ans^(1/length(vec)))
+}
+geowhile(seq(1, 100))
+
+georep <- function(vec) {
+  ans <- 1
+  i <- 1
+  repeat {
+    if (i > length(vec))
+      break
+    ans <- ans*vec[i]
+    i <- i + 1
+  }
+  return (ans^(1/length(vec)))
+}
+georep(seq(1, 100))
+```
+```{r}
+get_dist <- function(distances, ltrs) {
+  return (distances[ltrs[1], ltrs[2]] + distances[ltrs[2], ltrs[3]])
+}
+num_letters <- length(LETTERS)
+set.seed(123)
+values <- sample.int(num_letters) 
+distances <- values %*% t(values)
+diag(distances) <- 0
+dimnames(distances) <- list(LETTERS, LETTERS)
+
+cal <- c('C', 'A', 'L')
+stats <- c('S', 'T', 'A', 'T', 'S')
+oski <- c('O', 'S', 'K', 'I')
+zzz <- rep('Z', 3)
+lets <- LETTERS
+first <- c('E', 'M', 'I', 'L', 'Y')
+last <- c('L', 'A', 'N')
+get_dist(distances, cal)
+get_dist(distances, stats)
+get_dist(distances, oski)
+get_dist(distances, zzz)
+get_dist(distances, lets)
+get_dist(distances, first)
+get_dist(distances, last)
+
+strings <- list(
+  cal = cal,
+  stats = stats,
+  oski = oski,
+  zzz = zzz,
+  lets = lets,
+  first = first,
+  last = last
+)
+
+strings_dists <- rep(0, 7)
+j <- 1
+for (i in strings) {
+  strings_dists[j] <- get_dist(distances, i)
+  j <- j + 1
+}
+strings_dists
+```
