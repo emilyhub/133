@@ -1,4 +1,8 @@
-title: Modifyauthor: Emily LanDate: 3/27/2018Output: html_documentThis is the first line
+title: Modify
+author: Emily Lan
+Date: 3/27/2018
+Output: html_document
+This is the first line
 A 2nd line
 
 

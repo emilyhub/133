@@ -16,11 +16,17 @@ char_freqs <- table(num_chars)
 char_freqs
 plot(char_freqs)
 
+tolower(states)
+toupper(states)
+casefold(states, upper=TRUE)
+casefold(states, upper=FALSE)
+
 paste(head(states), head(num_chars), sep = " ")
 paste(head(states), collapse = "")
 
 substr(states, 1, 3)
-substr(states, -1, 3)
+substr(states, -1, 3) #Unsure how to get last 3
+paste(substr(states, 1, 1), substr(states, -1, 3))
 
 challenge <- function(n) {
   states_list <- c()
@@ -68,9 +74,13 @@ outfile <- "output.txt"
 
 # writing to 'outfile.txt'
 cat("title: Modify", file = outfile)
+cat("\n", file = outfile, append = TRUE)
 cat("author: Emily Lan", file = outfile, append = TRUE)
+cat("\n", file = outfile, append = TRUE)
 cat("Date: 3/27/2018", file = outfile, append = TRUE)
+cat("\n", file = outfile, append = TRUE)
 cat("Output: html_document", file = outfile, append = TRUE)
+cat("\n", file = outfile, append = TRUE)
 cat("This is the first line", file = outfile, append = TRUE)
 # insert new line
 cat("\n", file = outfile, append = TRUE)

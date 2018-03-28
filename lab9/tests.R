@@ -8,17 +8,20 @@ test_that("range works as expected", {
   expect_type(stat_range(x), 'double')
 })
 
+
+#Unsure what vector y should be
 context("Test for range value") 
 test_that("range works as expected", {
-  y <- c(1, 2, 3, 4, 5)
+  y <- c(1, 2, 3, 4, NA)
   
   expect_length(stat_range(y), 1)
   expect_type(stat_range(y), 'NA_real_')
 })
 
+#Unsure what vector z should be
 context("Test for range value") 
 test_that("range works as expected", {
-  z <- c(1, 2, 3, 4, 5)
+  z <- c(1, 2)
   
   expect_equal(stat_range(z), 1L)
   expect_length(stat_range(z), 1)
