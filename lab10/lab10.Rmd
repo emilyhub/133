@@ -1,0 +1,116 @@
+---
+title: "lab10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(stringr)
+library(plotly)
+library(RgoogleMaps)
+library(ggmap)
+```
+
+```{r}
+dat <- read.csv('mobile-food-sf.csv', stringsAsFactors = FALSE)
+times <- c('12PM', '10AM', '9AM', '8AM', '2PM')
+
+# subset time
+str_sub(times, start = 1, end = -3)
+
+# subset period
+str_sub(times, start = -2)
+#
+```
+
+```{r}
+#Using times, create a numeric vector hours containing just the number time (i.e. hour)
+hours <- str_replace(times, pattern = 'AM|PM', '')
+hours
+
+#Using times, create a character vector periods containing the period, e.g. AM or PM
+periods <- str_replace(times, pattern = '[0-9]+', '')
+periods
+
+#Use plot_ly() to make a barchart of the counts for AM and PM values.
+plot_ly(data.frame(periods), x = ~c("AM", "PM"), y = table(periods), type = 'bar')
+
+#Write R code to create a vector start24 that contains the hour in 24hr scale.
+convert <- function(time, period) {
+  start24 <- c()
+  for (i in 1:length(time)) {
+    if (time[i] == 12) {
+      if (period[i] == "AM") {
+        start24 <- c(start24, 0)
+      } else {
+        start24 <- c(start24, 12)
+      }
+    } else {
+      if (period[i] == "PM" & time[i] != 12) {
+        start24 <- c(start24, as.numeric(time[i]) + 12)
+      } else {
+        start24 <- c(start24, as.numeric(time[i]))
+      }
+    }
+  }
+  return (start24)
+}
+start24 <- convert(hours, periods)
+start24
+
+#Add two columns start and end to the data frame dat, containing the starting and ending hour respectively (columns must be "numeric").
+hours <- str_replace(dat$starttime, pattern = 'AM|PM', '')
+periods <- str_replace(dat$starttime, pattern = '[0-9]+', '')
+dat$start <- convert(hours, periods)
+hours <- str_replace(dat$endtime, pattern = 'AM|PM', '')
+periods <- str_replace(dat$endtime, pattern = '[0-9]+', '')
+dat$end <- convert(hours, periods)
+#With the starting and ending hours, calculate the duration, and add one more column duration to the data frame dat:
+dat$duration <- dat$end - dat$start
+```
+
+```{r}
+lat_lon <- dat$Location
+lat_lon <- str_replace_all(dat$Location, pattern = '\\(|\\)', replacement = '')
+lat_lon <- str_split(lat_lon, pattern = ',')
+getfirst <- function(x) {
+  return (x[1])
+}
+getsecond <- function(x) {
+  return (x[2])
+}
+lat <- lapply(lat_lon, getfirst)
+lat <- as.numeric(unlist(lat))
+lon<- lapply(lat_lon, getsecond)
+lon <- as.numeric(unlist(lon))
+dat$lat <- lat
+dat$lon <- lon
+dat
+```
+
+```{r}
+dat <- na.omit(dat)
+sbbox <- make_bbox(lon = dat$lon, lat = dat$lat, f = .1)
+sbbox
+sf_map <- get_map(location = sbbox, maptype = "terrain", source = "google")
+ggmap(sf_map) + 
+  geom_point(data = dat, 
+             mapping = aes(x = lon, y = lat), 
+             color = "red", alpha = 0.2, size = 1)
+```
+
+```{r}
+foods <- dat$optionaltext[1:10]
+burros <- grepl("burritos", dat$optionaltext, ignore.case = TRUE)
+burritos <- dat[burros, ]
+tac <- grepl("tacos", dat$optionaltext, ignore.case = TRUE)
+burritos <- dat[tac, ]
+ggmap(sf_map) + 
+  geom_point(data = burritos, 
+             mapping = aes(x = lon, y = lat), 
+             color = "blue", alpha = 0.2, size = 1)
+```
