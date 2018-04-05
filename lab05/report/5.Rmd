@@ -71,12 +71,24 @@ ggplot(data = filter(dat, position == "C")) + geom_point(aes(x = experience, y =
 ggplot(data = filter(dat, position == "C")) + geom_point(aes(x = experience, y = salary)) + geom_smooth(aes(x = experience, y = salary), method = loess)
 ```
 
-```{r}
+```{r Bullet 1}
 ggplot(data = dat, aes(x = experience, y = salary)) + geom_point(aes(color = position)) + facet_grid(position ~ .)
+```
+```{r Bullet 2}
 ggplot(data = dat, aes(x = experience, y = salary)) + geom_point(aes(color = team)) + facet_grid(team ~ .)
+```
+```{r Bullet 3}
 ggplot(data = dat) + geom_density(aes(salary)) + facet_wrap(~ team)
+```
+```{r Bullet 4}
 ggplot(data = dat, aes(x = height, y = weight)) + geom_point(aes(color = position)) + facet_grid(position ~ .)
+```
+```{r Bullet 5}
 ggplot(data = dat) + geom_density2d(aes(x = experience, y = salary)) + facet_wrap(~ position)
+```
+```{r Bullet 6}
 ggplot(data = filter(dat, team == "GSW")) + geom_point(aes(x = experience, y = salary)) + theme_bw()
+```
+```{r Bullet 7}
 ggplot(data = dat) + geom_density2d(aes(x = experience, y = salary)) + facet_wrap(~ position) + theme_minimal()
 ```
